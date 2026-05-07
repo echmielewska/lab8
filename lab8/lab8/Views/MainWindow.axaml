@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:lab8.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="lab8.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="lab8">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+        <TextBlock Text="Wybierz grę:" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="6" Margin="0,8,0,0">
+            <Button Content="Gra 1" Width="160" Click="OpenGame1" />
+            <Button Content="Gra 2" Width="160" Click="OpenGame2" />
+            <Button Content="Gra 3" Width="160" Click="OpenGame3" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>

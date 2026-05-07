@@ -1,0 +1,9 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="lab8.Views.Game1Window"
+        Title="Gra 1" Width="400" Height="300">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+        <TextBlock Text="Gra 1 - tutaj będzie Twoja gra" HorizontalAlignment="Center"/>
+        <TextBlock Text="(Brak implementacji — użyj przycisku w menu)" HorizontalAlignment="Center" Opacity="0.7"/>
+    </StackPanel>
+</Window>
