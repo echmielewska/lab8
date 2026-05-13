@@ -1,0 +1,81 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaApplication1.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="AvaloniaApplication1.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Background="#2D5A27"
+        Title="Gra w Pana">
+
+    <Window.Resources>
+        <vm:ColorConverter x:Key="ColorConverter"/>
+        <DataTemplate x:Key="CardTemplate" x:DataType="vm:CardViewModel">
+            <Button Command="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).PlayCardCommand}"
+                    CommandParameter="{Binding}"
+            Background="Transparent"
+            Padding="0">
+            <Border Background="White" BorderBrush="Gray" BorderThickness="1" 
+                    CornerRadius="8" Width="65" Height="90" BoxShadow="2 2 5 0 #20000000">
+                <Grid RowDefinitions="Auto, *" Margin="5">
+                    <TextBlock Grid.Row="0" Text="{Binding Rank}" FontSize="14" FontWeight="Bold"
+                               Foreground="{Binding CardColor, Converter={StaticResource ColorConverter}}"/>
+                    <TextBlock Grid.Row="1" Text="{Binding Suit}" FontSize="32" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="{Binding CardColor, Converter={StaticResource ColorConverter}}"/>
+                </Grid>
+            </Border>
+            </Button>
+        </DataTemplate>
+    </Window.Resources>
+
+    <!-- Zmieniamy na Grid, żeby mieć kontrolę nad układem góra-dół -->
+    <Grid RowDefinitions="*, Auto, 150">
+        
+        <!-- 1. POLE GRY (STOS) -->
+        <Border Grid.Row="0" Margin="20" BorderBrush="#44FFFFFF" BorderThickness="2" CornerRadius="15" Background="#10000000">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="STOS" Foreground="White" Opacity="0.5" HorizontalAlignment="Center" Margin="10"/>
+                <!-- Tutaj wyświetlamy tylko ostatnie karty rzucone na stół -->
+                <ItemsControl ItemsSource="{Binding TableStack}" 
+                              ItemTemplate="{StaticResource CardTemplate}"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="-30"/> 
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <!-- 2. PRZYCISKI AKCJI (np. Dobierz) -->
+<!-- Sekcja PRZYCISKI AKCJI -->
+<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+    <Button Content="Dobierz karty (Wycofaj)" 
+            Command="{Binding DrawCardsCommand}"
+            Padding="15,10" 
+            Background="#CC0000" 
+            Foreground="White"
+            FontWeight="Bold"
+            CornerRadius="5"/>
+</StackPanel>
+
+        <!-- 3. RĘKA GRACZA -->
+        <Border Grid.Row="2" Background="#30000000" Padding="10">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding PlayerHand}" 
+                              ItemTemplate="{StaticResource CardTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <!-- Ujemny Spacing sprawia, że karty nachodzą na siebie jak w wachlarzu -->
+                            <StackPanel Orientation="Horizontal" Spacing="-25" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+        
+    </Grid>
+</Window>
