@@ -1,0 +1,64 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="500"
+        x:Class="Ruletka.MainWindow"
+        Title="Ruletka">
+  <Grid RowDefinitions="Auto,*" ColumnDefinitions="*">
+    <TextBlock Text="Ruletka" FontSize="22" HorizontalAlignment="Center" Margin="8" />
+
+    <Grid Grid.Row="1" ColumnDefinitions="2*,1*" Margin="12">
+      <!-- Wheel area -->
+      <Grid>
+        <Border Background="#222" CornerRadius="8" Padding="8">
+          <Grid>
+            <!-- Rotating wheel container -->
+            <Canvas x:Name="WheelContainer" Width="420" Height="420" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <!-- Wheel background -->
+              <Ellipse Width="420" Height="420" Fill="#0b0b0b" Stroke="#444" StrokeThickness="6" Canvas.Left="0" Canvas.Top="0" />
+            </Canvas>
+
+            <!-- Pointer at top (centered relative to parent) -->
+            <Polygon Points="0,0 -10,20 10,20" Fill="#ffcc00" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0" />
+          </Grid>
+        </Border>
+      </Grid>
+
+      <!-- Controls area -->
+      <StackPanel Grid.Column="1" Margin="16" Spacing="8">
+        <TextBlock Text="Gracz:" FontWeight="Bold" />
+        <TextBlock x:Name="PlayerNameText" Text="-" FontSize="16" />
+        <TextBlock Text="Saldo:" FontWeight="Bold" />
+        <TextBlock x:Name="BalanceText" Text="1000" FontSize="18" />
+
+        <TextBlock Text="Typ zakładu:" Margin="0,8,0,0" />
+        <ComboBox x:Name="BetTypeCombo" SelectedIndex="0">
+          <ComboBoxItem>Numer</ComboBoxItem>
+          <ComboBoxItem>Czerwone</ComboBoxItem>
+          <ComboBoxItem>Czarne</ComboBoxItem>
+        </ComboBox>
+
+        <TextBlock Text="Numer (0-36, używane tylko gdy Typ=Numer):" />
+        <TextBox x:Name="NumberText" Text="0" />
+
+        <TextBlock Text="Kwota zakładu:" />
+        <TextBox x:Name="BetAmountText" Text="100" />
+
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button x:Name="SpinButton" Content="Zakręć" Width="120" HorizontalAlignment="Left" />
+          <Button x:Name="NextPlayerButton" Content="Następny gracz" Width="140" HorizontalAlignment="Left" />
+        </StackPanel>
+        <Button x:Name="EndButton" Content="Zakończ rozgrywkę" Width="160" HorizontalAlignment="Left" Margin="0,6,0,0" />
+
+        <TextBlock x:Name="ResultText" Text="Wynik: -" Margin="0,8,0,0" />
+        <TextBlock x:Name="MessageText" Text="" Foreground="LightGreen" />
+      </StackPanel>
+    </Grid>
+
+    <!-- Center overlay for big result -->
+    <Border x:Name="CenterResultOverlay" Grid.Row="1" Background="#AA000000" CornerRadius="8" Padding="12" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" IsVisible="False">
+      <TextBlock x:Name="CenterResultText" Text="0" FontSize="64" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
+    </Border>
+  </Grid>
+</Window>

@@ -1,0 +1,150 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|c:\\users\\elele\\desktop\\gra_w_ruletke\\ruletka\\ruletka\\mainwindow.axaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|solutionrelative:ruletka\\mainwindow.axaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|c:\\users\\elele\\desktop\\gra_w_ruletke\\ruletka\\ruletka\\mainwindow.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
+      "RelativeMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|solutionrelative:ruletka\\mainwindow.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|c:\\users\\elele\\desktop\\gra_w_ruletke\\ruletka\\ruletka\\ruletka.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|solutionrelative:ruletka\\ruletka.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|c:\\users\\elele\\desktop\\gra_w_ruletke\\ruletka\\ruletka\\startupplayerswindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|solutionrelative:ruletka\\startupplayerswindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|c:\\users\\elele\\desktop\\gra_w_ruletke\\ruletka\\ruletka\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|solutionrelative:ruletka\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|c:\\users\\elele\\desktop\\gra_w_ruletke\\ruletka\\ruletka\\finalwindow.axaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|solutionrelative:ruletka\\finalwindow.axaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|c:\\users\\elele\\desktop\\gra_w_ruletke\\ruletka\\ruletka\\finalwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26F2A580-9953-4576-ABAF-10F178294ECB}|Ruletka\\Ruletka.csproj|solutionrelative:ruletka\\finalwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Ruletka",
+              "DocumentMoniker": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\Ruletka.csproj",
+              "RelativeDocumentMoniker": "Ruletka\\Ruletka.csproj",
+              "ToolTip": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\Ruletka.csproj",
+              "RelativeToolTip": "Ruletka\\Ruletka.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-13T19:31:31.125Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "StartupPlayersWindow.cs",
+              "DocumentMoniker": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\StartupPlayersWindow.cs",
+              "RelativeDocumentMoniker": "Ruletka\\StartupPlayersWindow.cs",
+              "ToolTip": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\StartupPlayersWindow.cs",
+              "RelativeToolTip": "Ruletka\\StartupPlayersWindow.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAowD0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:47:34.416Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\Player.cs",
+              "RelativeDocumentMoniker": "Ruletka\\Player.cs",
+              "ToolTip": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\Player.cs",
+              "RelativeToolTip": "Ruletka\\Player.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAiwCgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:47:27.616Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FinalWindow.axaml",
+              "DocumentMoniker": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\FinalWindow.axaml",
+              "RelativeDocumentMoniker": "Ruletka\\FinalWindow.axaml",
+              "ToolTip": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\FinalWindow.axaml",
+              "RelativeToolTip": "Ruletka\\FinalWindow.axaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-13T19:42:48.442Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "FinalWindow.cs",
+              "DocumentMoniker": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\FinalWindow.cs",
+              "RelativeDocumentMoniker": "Ruletka\\FinalWindow.cs",
+              "ToolTip": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\FinalWindow.cs",
+              "RelativeToolTip": "Ruletka\\FinalWindow.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAgwE0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:29:46.871Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.axaml",
+              "DocumentMoniker": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\MainWindow.axaml",
+              "RelativeDocumentMoniker": "Ruletka\\MainWindow.axaml",
+              "ToolTip": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\MainWindow.axaml",
+              "RelativeToolTip": "Ruletka\\MainWindow.axaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-13T19:01:04.408Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.axaml.cs",
+              "DocumentMoniker": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\MainWindow.axaml.cs",
+              "RelativeDocumentMoniker": "Ruletka\\MainWindow.axaml.cs",
+              "ToolTip": "C:\\Users\\elele\\Desktop\\gra_w_ruletke\\Ruletka\\Ruletka\\MainWindow.axaml.cs",
+              "RelativeToolTip": "Ruletka\\MainWindow.axaml.cs",
+              "ViewState": "AgIAAFwBAAAAAAAAAAAIwL8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:01:03.77Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

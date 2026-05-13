@@ -1,0 +1,325 @@
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Media;
+using Avalonia.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Ruletka
+{
+    public partial class MainWindow : Window
+    {
+        private readonly List<int> _numbersOrder = new();
+        private readonly Dictionary<int, Color> _numberColors = new();
+        private double _currentRotation = 0.0;
+        private Random _rng = new();
+        private int _balance = 1000;
+
+        // runtime control references
+        private Canvas _wheelCanvas;
+        private Button _spinButton;
+        private Button _endButton;
+        private Button _nextPlayerButton;
+        private TextBlock _playerNameText;
+
+        private Player _player1;
+        private Player _player2;
+        private Player _currentPlayer;
+        private TextBlock _balanceTextBlock;
+        private ComboBox _betTypeCombo;
+        private TextBox _numberTextBox;
+        private TextBox _betAmountTextBox;
+        private TextBlock _resultText;
+        private TextBlock _messageText;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            // find controls by name
+            _wheelCanvas = this.FindControl<Canvas>("WheelContainer");
+            _spinButton = this.FindControl<Button>("SpinButton");
+            _balanceTextBlock = this.FindControl<TextBlock>("BalanceText");
+            _playerNameText = this.FindControl<TextBlock>("PlayerNameText");
+            _betTypeCombo = this.FindControl<ComboBox>("BetTypeCombo");
+            _numberTextBox = this.FindControl<TextBox>("NumberText");
+            _betAmountTextBox = this.FindControl<TextBox>("BetAmountText");
+            _resultText = this.FindControl<TextBlock>("ResultText");
+            _messageText = this.FindControl<TextBlock>("MessageText");
+
+            // Build when canvas is ready; also rebuild on size changes to keep center correct
+            if (_wheelCanvas != null)
+            {
+                _wheelCanvas.AttachedToVisualTree += (_, _) => BuildWheel();
+                _wheelCanvas.SizeChanged += (_, _) => BuildWheel();
+            }
+            else
+            {
+                BuildWheel();
+            }
+
+            _endButton = this.FindControl<Button>("EndButton");
+            _nextPlayerButton = this.FindControl<Button>("NextPlayerButton");
+
+            if (_spinButton != null)
+                _spinButton.Click += async (_, _) => await OnSpin();
+
+            if (_endButton != null)
+                _endButton.Click += (_, _) => OpenFinalWindow();
+
+            if (_nextPlayerButton != null)
+                _nextPlayerButton.Click += (_, _) => SwitchPlayer();
+
+            if (_balanceTextBlock != null)
+                _balanceTextBlock.Text = _balance.ToString();
+
+            // Ask for players after window is opened to avoid showing dialog during construction
+            this.Opened += async (_, _) =>
+            {
+                var startup = new StartupPlayersWindow();
+                await startup.ShowDialog(this);
+                _player1 = startup.Player1 ?? new Player("Gracz 1", 1000);
+                _player2 = startup.Player2 ?? new Player("Gracz 2", 1000);
+                _currentPlayer = _player1;
+                UpdatePlayerDisplay();
+            };
+        }
+
+        private void BuildWheel()
+        {
+            // Standard European roulette order (single zero)
+            int[] order = new int[] {
+                0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26
+            };
+
+            _numbersOrder.Clear();
+            _numbersOrder.AddRange(order);
+
+            // Colors
+            var redSet = new HashSet<int>{1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36};
+            foreach (var n in _numbersOrder)
+            {
+                _numberColors[n] = redSet.Contains(n) ? Colors.Red : Colors.Black;
+            }
+
+            // Draw slices
+            var canvas = _wheelCanvas;
+            if (canvas == null) return;
+            canvas.Children.Clear();
+
+            var bounds = canvas.Bounds;
+            double width = bounds.Width;
+            double height = bounds.Height;
+            if (width <= 0 || height <= 0) return;
+            double cx = width / 2.0;
+            double cy = height / 2.0;
+            double r = Math.Min(width, height) / 2.0 - 20;
+            int count = _numbersOrder.Count;
+            double anglePer = 360.0 / count;
+
+            var numberPositions = new Dictionary<int, Point>();
+
+            for (int i = 0; i < count; i++)
+            {
+                double midAngle = (i * anglePer + anglePer / 2 - 90) * Math.PI / 180.0;
+                double tx = cx + (r) * Math.Cos(midAngle);
+                double ty = cy + (r) * Math.Sin(midAngle);
+
+                var dot = new Ellipse
+                {
+                    Width = 28,
+                    Height = 28,
+                    Fill = new SolidColorBrush(_numberColors[_numbersOrder[i]]),
+                    Stroke = Brushes.DarkGray
+                };
+                Canvas.SetLeft(dot, tx - 14);
+                Canvas.SetTop(dot, ty - 14);
+                canvas.Children.Add(dot);
+
+                var txt = new TextBlock
+                {
+                    Text = _numbersOrder[i].ToString(),
+                    Foreground = Brushes.White,
+                    FontSize = 12
+                };
+                Canvas.SetLeft(txt, tx - 10);
+                Canvas.SetTop(txt, ty - 8);
+                canvas.Children.Add(txt);
+
+                // remember position for this number
+                numberPositions[_numbersOrder[i]] = new Point(tx, ty);
+            }
+
+            // If specific numbers exist, set rotation origin to intersection point (centroid)
+            int[] targetNumbers = new int[] { 9, 34, 10, 26 };
+            var valid = targetNumbers.All(n => numberPositions.ContainsKey(n));
+            if (valid)
+            {
+                double px = 0, py = 0;
+                foreach (var n in targetNumbers)
+                {
+                    var p = numberPositions[n];
+                    px += p.X;
+                    py += p.Y;
+                }
+                px /= targetNumbers.Length;
+                py /= targetNumbers.Length;
+
+                // Normalize to 0..1 relative canvas bounds
+                double nx = px / width;
+                double ny = py / height;
+                // Clamp
+                nx = Math.Max(0, Math.Min(1, nx));
+                ny = Math.Max(0, Math.Min(1, ny));
+
+                canvas.RenderTransformOrigin = new RelativePoint(nx, ny, RelativeUnit.Relative);
+            }
+        }
+
+        private async Task OnSpin()
+        {
+            // Read bet
+            if (_betAmountTextBox == null)
+            {
+                if (_messageText != null) _messageText.Text = "Błąd UI";
+                return;
+            }
+
+            if (!int.TryParse(_betAmountTextBox.Text, out int betAmount) || betAmount <= 0)
+            {
+                if (_messageText != null) _messageText.Text = "Nieprawidłowa kwota zakładu.";
+                return;
+            }
+
+            if (betAmount > _balance)
+            {
+                if (_messageText != null) _messageText.Text = "Za mało środków.";
+                return;
+            }
+
+            string betType = null;
+            if (_betTypeCombo != null)
+                betType = ((_betTypeCombo.SelectedItem as ComboBoxItem)?.Content as string) ?? ((_betTypeCombo.SelectedItem?.ToString()));
+
+            int? chosenNumber = null;
+            if (betType == "Numer")
+            {
+                if (_numberTextBox == null || !int.TryParse(_numberTextBox.Text, out int num) || num < 0 || num > 36)
+                {
+                    if (_messageText != null) _messageText.Text = "Nieprawidłowy numer (0-36).";
+                    return;
+                }
+                chosenNumber = num;
+            }
+
+            if (_spinButton != null) _spinButton.IsEnabled = false;
+            if (_messageText != null) _messageText.Text = "Kręcimy...";
+
+            // Simulate spin: decide winning number first then animate rotation to land there
+            int winnerIndex = _rng.Next(_numbersOrder.Count);
+            int winnerNumber = _numbersOrder[winnerIndex];
+
+            // Calculate target rotation so that winnerIndex aligns with pointer at top (index 0 angle)
+            double anglePer = 360.0 / _numbersOrder.Count;
+            // target rotation such that slice's middle goes to -90 degrees
+            double targetAngle = - (winnerIndex * anglePer + anglePer / 2);
+            // Normalize into degrees and add several revolutions
+            double rotations = 4 + _rng.NextDouble() * 3; // 4-7 rotations
+            double finalRotation = _currentRotation + rotations * 360 + (targetAngle - (_currentRotation % 360));
+
+            // Animate rotation (simple linear animation)
+            double durationMs = 3000;
+            double start = _currentRotation;
+            double startTime = Environment.TickCount;
+            while (true)
+            {
+                double elapsed = Environment.TickCount - startTime;
+                double t = Math.Min(1.0, elapsed / durationMs);
+                // ease out
+                double ease = 1 - Math.Pow(1 - t, 3);
+                _currentRotation = start + (finalRotation - start) * ease;
+                ApplyWheelRotation(_currentRotation);
+                if (t >= 1.0) break;
+                await Task.Delay(16);
+            }
+
+            // Determine outcome
+            int landedIndex = ((int)Math.Floor(((-_currentRotation + anglePer / 2) / anglePer))) % _numbersOrder.Count;
+            if (landedIndex < 0) landedIndex += _numbersOrder.Count;
+            int landedNumber = _numbersOrder[landedIndex];
+
+            if (_resultText != null) _resultText.Text = $"Wynik: {landedNumber}";
+
+            int payout = 0;
+            bool win = false;
+            if (betType == "Numer" && chosenNumber.HasValue)
+            {
+                if (chosenNumber.Value == landedNumber)
+                {
+                    payout = betAmount * 35;
+                    win = true;
+                }
+            }
+            else if (betType == "Czerwone")
+            {
+                if (_numberColors[landedNumber] == Colors.Red)
+                {
+                    payout = betAmount;
+                    win = true;
+                }
+            }
+            else if (betType == "Czarne")
+            {
+                if (_numberColors[landedNumber] == Colors.Black)
+                {
+                    payout = betAmount;
+                    win = true;
+                }
+            }
+
+            if (win)
+            {
+                _currentPlayer.Balance += payout;
+                if (_messageText != null) _messageText.Text = $"Wygrałeś {payout}!";
+            }
+            else
+            {
+                _currentPlayer.Balance -= betAmount;
+                if (_messageText != null) _messageText.Text = $"Przegrałeś {betAmount}.";
+            }
+
+            if (_balanceTextBlock != null) _balanceTextBlock.Text = _currentPlayer.Balance.ToString();
+            if (_spinButton != null) _spinButton.IsEnabled = true;
+        }
+
+        private void SwitchPlayer()
+        {
+            _currentPlayer = _currentPlayer == _player1 ? _player2 : _player1;
+            UpdatePlayerDisplay();
+        }
+
+        private void UpdatePlayerDisplay()
+        {
+            if (_playerNameText != null) _playerNameText.Text = _currentPlayer?.Name ?? "-";
+            if (_balanceTextBlock != null) _balanceTextBlock.Text = _currentPlayer?.Balance.ToString() ?? "0";
+        }
+
+        private void ApplyWheelRotation(double degrees)
+        {
+            var canvas = _wheelCanvas;
+            if (canvas == null) return;
+            // Apply RenderTransform to canvas; use RenderTransformOrigin for center
+            canvas.RenderTransform = new RotateTransform(degrees);
+        }
+
+        private async void OpenFinalWindow()
+        {
+            var final = new FinalWindow(_balance);
+            await final.ShowDialog(this);
+            this.Close();
+        }
+    }
+}
