@@ -30,52 +30,53 @@
         </DataTemplate>
     </Window.Resources>
 
-    <!-- Zmieniamy na Grid, żeby mieć kontrolę nad układem góra-dół -->
-    <Grid RowDefinitions="*, Auto, 150">
-        
-        <!-- 1. POLE GRY (STOS) -->
-        <Border Grid.Row="0" Margin="20" BorderBrush="#44FFFFFF" BorderThickness="2" CornerRadius="15" Background="#10000000">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="STOS" Foreground="White" Opacity="0.5" HorizontalAlignment="Center" Margin="10"/>
-                <!-- Tutaj wyświetlamy tylko ostatnie karty rzucone na stół -->
-                <ItemsControl ItemsSource="{Binding TableStack}" 
-                              ItemTemplate="{StaticResource CardTemplate}"
-                              IsHitTestVisible="False">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="-30"/> 
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </StackPanel>
-        </Border>
+   <Grid RowDefinitions="150, *, Auto, 150">
+    
+    <!-- RĘKA GRACZA 2 -->
+    <Border Grid.Row="0" Background="#30000000" Padding="10">
+        <ItemsControl ItemsSource="{Binding Player2Hand}" 
+                      ItemTemplate="{StaticResource CardTemplate}"
+                      IsEnabled="{Binding IsGameActive}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="-25" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Border>
 
-        <!-- 2. PRZYCISKI AKCJI (np. Dobierz) -->
-<!-- Sekcja PRZYCISKI AKCJI -->
-<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-    <Button Content="Dobierz karty (Wycofaj)" 
-            Command="{Binding DrawCardsCommand}"
-            Padding="15,10" 
-            Background="#CC0000" 
-            Foreground="White"
-            FontWeight="Bold"
-            CornerRadius="5"/>
-</StackPanel>
+    <!-- STATUS TURY I STOS -->
+    <Border Grid.Row="1" Margin="20" BorderBrush="#44FFFFFF" BorderThickness="2" CornerRadius="15">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="{Binding GameStatus}" Foreground="Yellow" FontSize="20" HorizontalAlignment="Center" Margin="5"/>
+            <ItemsControl ItemsSource="{Binding TableStack}" 
+                          ItemTemplate="{StaticResource CardTemplate}"
+                          IsHitTestVisible="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="-30" HorizontalAlignment="Center"/> 
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
 
-        <!-- 3. RĘKA GRACZA -->
-        <Border Grid.Row="2" Background="#30000000" Padding="10">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding PlayerHand}" 
-                              ItemTemplate="{StaticResource CardTemplate}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <!-- Ujemny Spacing sprawia, że karty nachodzą na siebie jak w wachlarzu -->
-                            <StackPanel Orientation="Horizontal" Spacing="-25" HorizontalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
-        </Border>
-        
-    </Grid>
+    <!-- PRZYCISK DOBIERANIA -->
+    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="10">
+        <Button Content="Dobierz 3 karty" Command="{Binding DrawCardsCommand}" Background="#CC0000" Foreground="White" IsEnabled="{Binding IsGameActive}"/>
+    </StackPanel>
+
+    <!-- RĘKA GRACZA 1 -->
+    <Border Grid.Row="3" Background="#30000000" Padding="10">
+        <ItemsControl ItemsSource="{Binding Player1Hand}" 
+                      ItemTemplate="{StaticResource CardTemplate}"
+                      IsEnabled="{Binding IsGameActive}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="-25" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Border>
+</Grid>
 </Window>

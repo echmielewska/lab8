@@ -90,3 +90,4 @@ C:\Users\48571\Desktop\AvaloniaApplication1\obj\Debug\net10.0\refint\AvaloniaApp
 C:\Users\48571\Desktop\AvaloniaApplication1\obj\Debug\net10.0\AvaloniaApplication1.pdb
 C:\Users\48571\Desktop\AvaloniaApplication1\obj\Debug\net10.0\AvaloniaApplication1.genruntimeconfig.cache
 C:\Users\48571\Desktop\AvaloniaApplication1\obj\Debug\net10.0\ref\AvaloniaApplication1.dll
+C:\Users\48571\Desktop\AvaloniaApplication1\obj\Debug\net10.0\AvaloniaApplication1.sourcelink.json
