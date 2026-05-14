@@ -1,0 +1,148 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\MainWindow.axaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Ruletka\\Ruletka\\MainWindow.axaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\Player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Ruletka\\Ruletka\\Player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Ruletka\\Ruletka\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\StartupPlayersWindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Ruletka\\Ruletka\\StartupPlayersWindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\FinalWindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Ruletka\\Ruletka\\FinalWindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\FinalWindow.axaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Ruletka\\Ruletka\\FinalWindow.axaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 122,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "StartupPlayersWindow.cs",
+              "DocumentMoniker": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\StartupPlayersWindow.cs",
+              "RelativeDocumentMoniker": "Ruletka\\Ruletka\\StartupPlayersWindow.cs",
+              "ToolTip": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\StartupPlayersWindow.cs",
+              "RelativeToolTip": "Ruletka\\Ruletka\\StartupPlayersWindow.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T10:17:40.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\Program.cs",
+              "RelativeDocumentMoniker": "Ruletka\\Ruletka\\Program.cs",
+              "ToolTip": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\Program.cs",
+              "RelativeToolTip": "Ruletka\\Ruletka\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T10:17:39.166Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\Player.cs",
+              "RelativeDocumentMoniker": "Ruletka\\Ruletka\\Player.cs",
+              "ToolTip": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\Player.cs",
+              "RelativeToolTip": "Ruletka\\Ruletka\\Player.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T10:17:38.088Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.axaml.cs",
+              "DocumentMoniker": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\MainWindow.axaml.cs",
+              "RelativeDocumentMoniker": "Ruletka\\Ruletka\\MainWindow.axaml.cs",
+              "ToolTip": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\MainWindow.axaml.cs",
+              "RelativeToolTip": "Ruletka\\Ruletka\\MainWindow.axaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T10:17:36.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FinalWindow.cs",
+              "DocumentMoniker": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\FinalWindow.cs",
+              "RelativeDocumentMoniker": "Ruletka\\Ruletka\\FinalWindow.cs",
+              "ToolTip": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\FinalWindow.cs",
+              "RelativeToolTip": "Ruletka\\Ruletka\\FinalWindow.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T10:17:32.205Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FinalWindow.axaml",
+              "DocumentMoniker": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\FinalWindow.axaml",
+              "RelativeDocumentMoniker": "Ruletka\\Ruletka\\FinalWindow.axaml",
+              "ToolTip": "C:\\Users\\ewach\\Desktop\\ruletka-modyfikacja\\Ruletka\\Ruletka\\FinalWindow.axaml",
+              "RelativeToolTip": "Ruletka\\Ruletka\\FinalWindow.axaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-14T10:17:26.187Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 448,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

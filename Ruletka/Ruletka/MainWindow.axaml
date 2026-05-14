@@ -51,6 +51,12 @@
         </StackPanel>
         <Button x:Name="EndButton" Content="Zakończ rozgrywkę" Width="160" HorizontalAlignment="Left" Margin="0,6,0,0" />
 
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <Button x:Name="LeftButton" Content=" Lewo" Click="OnLeftClick" IsEnabled="False" />
+            <Button x:Name="RightButton" Content=" Prawo" Click="OnRightClick" IsEnabled="False" />
+        </StackPanel>
+
+
         <TextBlock x:Name="ResultText" Text="Wynik: -" Margin="0,8,0,0" />
         <TextBlock x:Name="MessageText" Text="" Foreground="LightGreen" />
       </StackPanel>

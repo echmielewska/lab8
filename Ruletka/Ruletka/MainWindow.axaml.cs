@@ -1,9 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +37,12 @@ namespace Ruletka
         private TextBox _betAmountTextBox;
         private TextBlock _resultText;
         private TextBlock _messageText;
+        private Button _leftButton;
+        private Button _rightButton;
+        // state: whether a spin just finished and is awaiting left/right confirmation
+        private bool _awaitingConfirmation = false;
+        private int _pendingLandedNumber = -1;
+        private CancellationTokenSource _confirmCts;
 
         public MainWindow()
         {
@@ -50,6 +58,8 @@ namespace Ruletka
             _betAmountTextBox = this.FindControl<TextBox>("BetAmountText");
             _resultText = this.FindControl<TextBlock>("ResultText");
             _messageText = this.FindControl<TextBlock>("MessageText");
+            _leftButton = this.FindControl<Button>("LeftButton");
+            _rightButton = this.FindControl<Button>("RightButton");
 
             // Build when canvas is ready; also rebuild on size changes to keep center correct
             if (_wheelCanvas != null)
@@ -229,17 +239,12 @@ namespace Ruletka
             if (_spinButton != null) _spinButton.IsEnabled = false;
             if (_messageText != null) _messageText.Text = "Kręcimy...";
 
-            // Simulate spin: decide winning number first then animate rotation to land there
-            int winnerIndex = _rng.Next(_numbersOrder.Count);
-            int winnerNumber = _numbersOrder[winnerIndex];
-
-            // Calculate target rotation so that winnerIndex aligns with pointer at top (index 0 angle)
+            // Simulate spin: animate a number of full rotations plus a random offset
             double anglePer = 360.0 / _numbersOrder.Count;
-            // target rotation such that slice's middle goes to -90 degrees
-            double targetAngle = - (winnerIndex * anglePer + anglePer / 2);
-            // Normalize into degrees and add several revolutions
             double rotations = 4 + _rng.NextDouble() * 3; // 4-7 rotations
-            double finalRotation = _currentRotation + rotations * 360 + (targetAngle - (_currentRotation % 360));
+            // random final offset (will determine winner after animation completes)
+            double randomOffset = _rng.NextDouble() * 360.0;
+            double finalRotation = _currentRotation + rotations * 360 + randomOffset;
 
             // Animate rotation (simple linear animation)
             double durationMs = 3000;
@@ -257,13 +262,295 @@ namespace Ruletka
                 await Task.Delay(16);
             }
 
-            // Determine outcome
+            // Determine outcome but don't show final result yet. Wait for left/right confirmation.
             int landedIndex = ((int)Math.Floor(((-_currentRotation + anglePer / 2) / anglePer))) % _numbersOrder.Count;
             if (landedIndex < 0) landedIndex += _numbersOrder.Count;
             int landedNumber = _numbersOrder[landedIndex];
 
+            // Store pending number and enable left/right confirmation buttons
+            _pendingLandedNumber = landedNumber;
+            _awaitingConfirmation = true;
+            if (_leftButton != null) _leftButton.IsEnabled = true;
+            if (_rightButton != null) _rightButton.IsEnabled = true;
+            if (_messageText != null) _messageText.Text = "Wybierz Lewo lub Prawo aby ustalić wynik.";
+
+            // show temporary (red) highlight and start confirmation timeout
+            HighlightPendingNumber(_pendingLandedNumber);
+            StartConfirmation();
+
+            int payout = 0;
+            bool win = false;
+            if (betType == "Numer" && chosenNumber.HasValue)
+            {
+                if (chosenNumber.Value == landedNumber)
+                {
+                    payout = betAmount * 35;
+                    win = true;
+                }
+            }
+            else if (betType == "Czerwone")
+            {
+                if (landedNumber != 0 && _numberColors[landedNumber] == Colors.Red)
+                {
+                    payout = betAmount;
+                    win = true;
+                }
+            }
+            else if (betType == "Czarne")
+            {
+                if (landedNumber != 0 && _numberColors[landedNumber] == Colors.Black)
+                {
+                    payout = betAmount;
+                    win = true;
+                }
+            }
+
+            // Note: payout and final messages will be applied when user confirms with left/right click
+            // Re-enable spin button only when confirmation handled
+        }
+
+        private void SwitchPlayer()
+        {
+            _currentPlayer = _currentPlayer == _player1 ? _player2 : _player1;
+            UpdatePlayerDisplay();
+        }
+
+        private void UpdatePlayerDisplay()
+        {
+            if (_playerNameText != null) _playerNameText.Text = _currentPlayer?.Name ?? "-";
+            if (_balanceTextBlock != null) _balanceTextBlock.Text = _currentPlayer?.Balance.ToString() ?? "0";
+        }
+
+        private void ApplyWheelRotation(double degrees)
+        {
+            var canvas = _wheelCanvas;
+            if (canvas == null) return;
+            // Apply RenderTransform to canvas; use RenderTransformOrigin for center
+            canvas.RenderTransform = new RotateTransform(degrees);
+        }
+
+        private async void ShowCenterResult(int number)
+        {
+            var overlay = this.FindControl<Border>("CenterResultOverlay");
+            var txt = this.FindControl<TextBlock>("CenterResultText");
+            if (overlay == null || txt == null) return;
+
+            txt.Text = number.ToString();
+            overlay.IsVisible = true;
+            // show for 1.8s
+            await Task.Delay(1800);
+            overlay.IsVisible = false;
+            // do not remove final highlight here; allow FinalizePendingResult to manage highlights
+        }
+
+        private void HighlightPendingNumber(int number)
+        {
+            var canvas = _wheelCanvas;
+            if (canvas == null) return;
+            RemovePendingHighlight();
+            if (!_numberPositions.ContainsKey(number)) return;
+            var p = _numberPositions[number];
+            var highlight = new Ellipse
+            {
+                Width = 44,
+                Height = 44,
+                Fill = Brushes.Transparent,
+                Stroke = Brushes.Red,
+                StrokeThickness = 4,
+                Opacity = 0.95,
+                Tag = "pending-highlight"
+            };
+            Canvas.SetLeft(highlight, p.X - highlight.Width / 2);
+            Canvas.SetTop(highlight, p.Y - highlight.Height / 2);
+            canvas.Children.Add(highlight);
+        }
+
+        private void HighlightFinalNumber(int number)
+        {
+            var canvas = _wheelCanvas;
+            if (canvas == null) return;
+            RemoveFinalHighlight();
+            if (!_numberPositions.ContainsKey(number)) return;
+            var p = _numberPositions[number];
+            var highlight = new Ellipse
+            {
+                Width = 48,
+                Height = 48,
+                Fill = Brushes.Transparent,
+                Stroke = Brushes.Gold,
+                StrokeThickness = 5,
+                Opacity = 0.95,
+                Tag = "final-highlight"
+            };
+            Canvas.SetLeft(highlight, p.X - highlight.Width / 2);
+            Canvas.SetTop(highlight, p.Y - highlight.Height / 2);
+            canvas.Children.Add(highlight);
+        }
+
+        private void RemovePendingHighlight()
+        {
+            var canvas = _wheelCanvas;
+            if (canvas == null) return;
+            var toRemove = canvas.Children.Where(c => (c as Control)?.Tag?.ToString() == "pending-highlight").ToList();
+            foreach (var r in toRemove)
+                canvas.Children.Remove(r);
+        }
+
+        private void RemoveFinalHighlight()
+        {
+            var canvas = _wheelCanvas;
+            if (canvas == null) return;
+            var toRemove = canvas.Children.Where(c => (c as Control)?.Tag?.ToString() == "final-highlight").ToList();
+            foreach (var r in toRemove)
+                canvas.Children.Remove(r);
+        }
+
+        private void RemoveHighlight()
+        {
+            RemovePendingHighlight();
+            RemoveFinalHighlight();
+        }
+
+        private void StartConfirmation()
+        {
+            _confirmCts?.Cancel();
+            _confirmCts = new CancellationTokenSource();
+            var token = _confirmCts.Token;
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(5000, token);
+                    if (token.IsCancellationRequested) return;
+                    Dispatcher.UIThread.Post(() => FinalizePendingResult(0));
+                }
+                catch (TaskCanceledException) { }
+            });
+        }
+
+        private async void OpenFinalWindow()
+        {
+            var list = new System.Collections.Generic.List<Player>();
+            if (_player1 != null) list.Add(_player1);
+            if (_player2 != null) list.Add(_player2);
+            var final = new FinalWindow(list);
+            await final.ShowDialog(this);
+            this.Close();
+        }
+
+        private void OnLeftClick(object? sender, RoutedEventArgs e)
+        {
+            if (!_awaitingConfirmation)
+            {
+                // allow small manual shifts even outside confirmation
+                PerformShift(-1);
+                return;
+            }
+
+            // Confirmation: apply left logic (for this app we consider left as accept)
+            FinalizePendingResult(-1);
+        }
+
+        private void OnRightClick(object? sender, RoutedEventArgs e)
+        {
+            if (!_awaitingConfirmation)
+            {
+                PerformShift(1);
+                return;
+            }
+
+            FinalizePendingResult(1);
+        }
+
+        /// <summary>
+        /// Attempts to shift the visible wheel by one slot to left (-1) or right (+1) with 50% chance.
+        /// Updates rotation, result text and highlight.
+        /// </summary>
+        /// <param name="dir">-1 for left, +1 for right</param>
+        private void PerformShift(int dir)
+        {
+            if (_numbersOrder == null || _numbersOrder.Count == 0) return;
+            double anglePer = 360.0 / _numbersOrder.Count;
+            bool success = _rng.NextDouble() < 0.5;
+            if (success)
+            {
+                // shift current rotation by one slice
+                _currentRotation += dir * anglePer;
+                ApplyWheelRotation(_currentRotation);
+            }
+
+            // recompute which number is at the pointer/top and update UI
+            int count = _numbersOrder.Count;
+            int landedIndex = ((int)Math.Floor(((-_currentRotation + anglePer / 2) / anglePer))) % count;
+            if (landedIndex < 0) landedIndex += count;
+            int landedNumber = _numbersOrder[landedIndex];
+            // update pending landed number whenever a manual shift occurs
+            _pendingLandedNumber = landedNumber;
+            if (_resultText != null) _resultText.Text = $"Wynik: {landedNumber}";
+            HighlightPendingNumber(landedNumber);
+
+            if (_messageText != null)
+            {
+                _messageText.Text = success ? (dir < 0 ? "Przesunięto w lewo!" : "Przesunięto w prawo!") : "Nie udało się przesunąć (50% szans).";
+            }
+        }
+
+        private async void FinalizePendingResult(int dir)
+        {
+            if (!_awaitingConfirmation) return;
+
+            // stop awaiting and cancel timeout
+            _awaitingConfirmation = false;
+            _confirmCts?.Cancel();
+
+            // disable confirmation buttons
+            if (_leftButton != null) _leftButton.IsEnabled = false;
+            if (_rightButton != null) _rightButton.IsEnabled = false;
+
+            // If user clicked (dir != 0) attempt a shift with 50% chance before finalizing
+            int landedNumber = _pendingLandedNumber;
+            if (dir != 0)
+            {
+                double anglePer = 360.0 / _numbersOrder.Count;
+                bool success = _rng.NextDouble() < 0.5;
+                if (success)
+                {
+                    _currentRotation += dir * anglePer;
+                    ApplyWheelRotation(_currentRotation);
+                    // recompute landed
+                    int count = _numbersOrder.Count;
+                    int landedIndex = ((int)Math.Floor(((-_currentRotation + anglePer / 2) / anglePer))) % count;
+                    if (landedIndex < 0) landedIndex += count;
+                    landedNumber = _numbersOrder[landedIndex];
+                    _pendingLandedNumber = landedNumber;
+                }
+            }
+
+            // switch pending highlight to final (yellow/gold)
+            RemovePendingHighlight();
+            HighlightFinalNumber(landedNumber);
+
             if (_resultText != null) _resultText.Text = $"Wynik: {landedNumber}";
             ShowCenterResult(landedNumber);
+
+            // Evaluate bets now
+            string betType = null;
+            if (_betTypeCombo != null)
+                betType = ((_betTypeCombo.SelectedItem as ComboBoxItem)?.Content as string) ?? ((_betTypeCombo.SelectedItem?.ToString()));
+
+            int? chosenNumber = null;
+            if (betType == "Numer")
+            {
+                if (_numberTextBox != null && int.TryParse(_numberTextBox.Text, out int num) && num >= 0 && num <= 36)
+                    chosenNumber = num;
+            }
+
+            if (!int.TryParse(_betAmountTextBox.Text, out int betAmount) || betAmount <= 0)
+            {
+                if (_messageText != null) _messageText.Text = "Nieprawidłowa kwota zakładu.";
+                if (_spinButton != null) _spinButton.IsEnabled = true;
+                return;
+            }
 
             int payout = 0;
             bool win = false;
@@ -307,83 +594,6 @@ namespace Ruletka
 
             if (_balanceTextBlock != null) _balanceTextBlock.Text = _currentPlayer.Balance.ToString();
             if (_spinButton != null) _spinButton.IsEnabled = true;
-        }
-
-        private void SwitchPlayer()
-        {
-            _currentPlayer = _currentPlayer == _player1 ? _player2 : _player1;
-            UpdatePlayerDisplay();
-        }
-
-        private void UpdatePlayerDisplay()
-        {
-            if (_playerNameText != null) _playerNameText.Text = _currentPlayer?.Name ?? "-";
-            if (_balanceTextBlock != null) _balanceTextBlock.Text = _currentPlayer?.Balance.ToString() ?? "0";
-        }
-
-        private void ApplyWheelRotation(double degrees)
-        {
-            var canvas = _wheelCanvas;
-            if (canvas == null) return;
-            // Apply RenderTransform to canvas; use RenderTransformOrigin for center
-            canvas.RenderTransform = new RotateTransform(degrees);
-        }
-
-        private async void ShowCenterResult(int number)
-        {
-            var overlay = this.FindControl<Border>("CenterResultOverlay");
-            var txt = this.FindControl<TextBlock>("CenterResultText");
-            if (overlay == null || txt == null) return;
-
-            txt.Text = number.ToString();
-            overlay.IsVisible = true;
-            // highlight landed number on wheel
-            HighlightNumber(number);
-            // show for 1.8s
-            await Task.Delay(1800);
-            overlay.IsVisible = false;
-            RemoveHighlight();
-        }
-
-        private void HighlightNumber(int number)
-        {
-            var canvas = _wheelCanvas;
-            if (canvas == null) return;
-            RemoveHighlight();
-            if (!_numberPositions.ContainsKey(number)) return;
-            var p = _numberPositions[number];
-            var highlight = new Ellipse
-            {
-                Width = 44,
-                Height = 44,
-                Fill = Brushes.Transparent,
-                Stroke = Brushes.Gold,
-                StrokeThickness = 4,
-                Opacity = 0.95,
-                Tag = "highlight"
-            };
-            Canvas.SetLeft(highlight, p.X - highlight.Width / 2);
-            Canvas.SetTop(highlight, p.Y - highlight.Height / 2);
-            canvas.Children.Add(highlight);
-        }
-
-        private void RemoveHighlight()
-        {
-            var canvas = _wheelCanvas;
-            if (canvas == null) return;
-            var toRemove = canvas.Children.Where(c => (c as Control)?.Tag?.ToString() == "highlight").ToList();
-            foreach (var r in toRemove)
-                canvas.Children.Remove(r);
-        }
-
-        private async void OpenFinalWindow()
-        {
-            var list = new System.Collections.Generic.List<Player>();
-            if (_player1 != null) list.Add(_player1);
-            if (_player2 != null) list.Add(_player2);
-            var final = new FinalWindow(list);
-            await final.ShowDialog(this);
-            this.Close();
         }
     }
 }
